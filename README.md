@@ -193,5 +193,3 @@ npm run build
 There are no npm dependencies. `addon/` contains the XPI sources. `worker.py` uses BabelDOC's asynchronous Python API. `scripts/build.py` produces the XPI, source archive, installation bundle, and checksums. See [TESTING.md](TESTING.md) for details. Automated tests do not call paid models or access a personal library. Model-specific translation quality still needs validation with your chosen endpoint.
 
 References: [BabelDOC](https://github.com/funstory-ai/BabelDOC), [Zotero plugin development](https://www.zotero.org/support/dev/zotero_7_for_developers). Plugin wrapper code is MIT-licensed. BabelDOC is installed separately under AGPL-3.0; its code is not bundled in the XPI. See the upstream project for its license.
-#   z o t e r o - b a b e l d o c  
- 
