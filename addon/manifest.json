@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "BabelDOC · 论文翻译",
+  "version": "0.2.7",
+  "description": "本机运行 BabelDOC，将译文和双语 PDF 保存为当前条目的子附件。",
+  "author": "Zotero BabelDOC contributors",
+  "applications": {
+    "zotero": {
+      "id": "babeldoc-local@zotero-babeldoc.local",
+      "update_url": "https://127.0.0.1:9/babeldoc-no-updates.json",
+      "strict_min_version": "7.0",
+      "strict_max_version": "10.0.*"
+    }
+  },
+  "icons": {"48": "content/icon.svg", "96": "content/icon.svg"}
+}

@@ -1,0 +1,10 @@
+# BabelDOC 0.6.4 imports BitStream, removed in bitstring 5.
+# Keep the rendering/database libraries on compatible major versions as well.
+BabelDOC==0.6.4
+bitstring>=4.3.0,<5
+PyMuPDF>=1.26.7,<2
+peewee>=3.17.8,<4
+# Tested numerical stack for the BabelDOC 0.6 series on Python 3.12.
+numpy==2.2.6
+scipy==1.15.3
+scikit-learn==1.7.1

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>BabelDOC · 翻译论文</title>
+  <link rel="stylesheet" href="settings.css"/>
+  <script src="core.js" defer="defer"></script>
+  <script src="translate.js" defer="defer"></script>
+</head>
+<body>
+  <h1>翻译论文</h1>
+  <p id="sourceTitle" style="overflow-wrap:anywhere"></p>
+  <form id="translationOptions">
+    <label for="pages">本次翻译页码（留空翻译全文）</label>
+    <input id="pages" type="text" placeholder="例如 3-8，或 1-5,8" autocomplete="off" aria-describedby="pageHelp feedback"/>
+    <p id="pageHelp" class="hint">范围包含起始页和结束页，按 PDF 文件的实际页序从 1 计数，封面也算一页。本次选择不会用于下一篇论文。</p>
+    <p id="feedback" role="alert"></p>
+    <footer><button id="startTranslation" type="submit" class="primary">开始翻译</button><button id="cancelTranslation" type="button">取消</button></footer>
+  </form>
+</body>
+</html>

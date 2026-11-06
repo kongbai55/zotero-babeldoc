@@ -1,0 +1,11 @@
+{
+  "name": "zotero-babeldoc-local",
+  "version": "0.2.7",
+  "private": true,
+  "description": "Local BabelDOC translation with child attachments for Zotero",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test tests/*.test.cjs && python -m unittest discover -s tests -p test_*.py",
+    "build": "python scripts/build.py"
+  }
+}

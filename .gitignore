@@ -1,0 +1,9 @@
+.venv/
+.tmp/
+__pycache__/
+*.pyc
+.test-profile*/
+.test-data*/
+test-results/
+dist/
+output/

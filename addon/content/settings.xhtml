@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <title>BabelDOC · 设置与进度</title>
+  <link rel="stylesheet" href="settings.css"/>
+  <script src="settings.js" defer="defer"></script>
+</head>
+<body>
+  <header><img src="icon.svg" alt=""/><div><h1>BabelDOC 论文翻译</h1><p>译文与双语 PDF，保存在原文献条目下。</p></div></header>
+  <section class="status" aria-live="polite"><strong id="status">就绪</strong><progress id="progress" max="100" value="0"></progress><button id="cancel" type="button" disabled="disabled">取消任务</button></section>
+  <form id="settings">
+    <fieldset><legend>本地环境</legend>
+      <label for="python">Python 可执行文件</label>
+      <div class="row"><input id="python" type="text" placeholder="选择已安装 BabelDOC 的 Python"/><button id="browse" type="button">选择…</button><button id="check" type="button">检查环境</button></div>
+      <div class="resource-row"><button id="prepare" type="button">准备资源</button><span class="hint">首次下载版面模型、字体等资源；以后换论文直接复用，不调用翻译 API。</span></div>
+      <p class="hint">先运行随插件提供的 setup.ps1（Windows）或 setup.sh，将脚本输出的 Python 路径填入。</p>
+    </fieldset>
+    <fieldset><legend>翻译模型</legend>
+      <div id="backendLabel" class="field-label">翻译方式</div>
+      <input id="backend" type="hidden" value="api"/>
+      <div class="backend-options" role="radiogroup" aria-labelledby="backendLabel">
+        <label class="backend-choice" id="backendApiChoice"><input id="backendApi" name="translationBackend" type="radio" value="api" checked="checked"/><span><strong>API / 本机模型接口</strong><small>使用原有接口、模型和密钥</small></span></label>
+        <label class="backend-choice" id="backendCodexChoice"><input id="backendCodex" name="translationBackend" type="radio" value="codex"/><span><strong>Codex 登录账户</strong><small>使用已登录的 ChatGPT 账户</small></span></label>
+      </div>
+      <div id="codexSettings" hidden="hidden">
+        <label for="codexBinary">Codex 可执行文件（留空自动查找）</label><input id="codexBinary" placeholder="codex.exe 完整路径；无需填写 API 密钥"/>
+        <input id="codexModel" type="hidden"/>
+        <div class="model-toolbar"><div id="codexModelLabel" class="field-label">Codex 模型</div><button id="refreshModels" type="button">刷新模型列表</button></div>
+        <p id="codexModelsStatus" class="hint" role="status">切换到 Codex 后，读取当前登录账户的模型列表。</p>
+        <div id="codexModels" class="model-options" role="radiogroup" aria-labelledby="codexModelLabel" aria-busy="false"></div>
+        <input id="codexEffort" type="hidden" value="low"/>
+        <div id="codexEffortLabel" class="field-label">推理强度</div>
+        <div class="effort-options" role="radiogroup" aria-labelledby="codexEffortLabel">
+          <label hidden="hidden"><input name="codexReasoningEffort" type="radio" value="none" disabled="disabled"/>无 · none</label>
+          <label hidden="hidden"><input name="codexReasoningEffort" type="radio" value="minimal" disabled="disabled"/>最小 · minimal</label>
+          <label><input name="codexReasoningEffort" type="radio" value="low" checked="checked"/>低 · low</label>
+          <label><input name="codexReasoningEffort" type="radio" value="medium"/>中 · medium</label>
+          <label><input name="codexReasoningEffort" type="radio" value="high"/>高 · high</label>
+          <label><input name="codexReasoningEffort" type="radio" value="xhigh"/>很高 · xhigh</label>
+          <label><input name="codexReasoningEffort" type="radio" value="max"/>最大 · max</label>
+        </div>
+        <p class="hint">列表来自当前官方 Codex CLI；切换账户或更新 CLI 后可刷新。仅显示所选模型支持的推理强度。论文翻译可从 low 开始，难句较多可试 medium；更高强度通常更慢、消耗更多额度，也不能修复 PDF 排版。</p>
+        <label for="codexConcurrency">同时翻译批次数</label><input id="codexConcurrency" type="number" min="1" max="4" step="1" value="2"/>
+        <p class="hint">默认同时处理 2 批，减少逐批等待；网络或账户限流时可改为 1。并行不表示额度免费或保证按倍数加速。</p>
+        <div class="resource-row"><button id="loginCodex" type="button">登录 Codex（官方浏览器）</button><button id="checkCodex" type="button">检查 Codex 登录</button></div>
+        <p class="hint">先在官方 Codex CLI 运行 codex login，用 ChatGPT 账户登录。后台使用临时会话，不保存本地聊天记录；仍消耗 Codex 额度，论文文本会发送给 OpenAI，不代表服务端零留存。额度不足会停止，不会自动回退到 API。关闭自动术语提取以减少额外调用。</p>
+      </div>
+      <div id="apiSettings">
+      <label for="baseURL">兼容 OpenAI 的接口地址</label><input id="baseURL" type="url" placeholder="http://127.0.0.1:11434/v1"/>
+      <p class="hint" id="destination"></p>
+      <div class="columns"><div><label for="model">模型名称</label><input id="model" type="text" placeholder="填写已安装或服务商提供的模型名"/></div><div><label for="apiKey">API 密钥（本机服务可留空）</label><input id="apiKey" type="password" autocomplete="off"/></div></div>
+      <p class="hint">密钥保存在 Zotero 的密码管理器。更换接口地址后，会读取该地址对应的密钥。</p>
+      </div>
+    </fieldset>
+    <fieldset><legend>翻译选项</legend>
+      <div class="columns triple"><div><label for="langIn">原文语言</label><input id="langIn" value="en"/></div><div><label for="langOut">译文语言</label><input id="langOut" value="zh"/></div><div><label for="qps">每秒请求数</label><input id="qps" type="number" min="1" max="20" value="2"/></div></div>
+      <p class="hint" id="qpsHint">每秒请求数用于 API 方式。</p>
+      <p class="hint">每次点击“翻译”时单独填写页码，留空翻译全文。</p>
+      <label class="checkbox"><input id="alternating" type="checkbox"/>双语 PDF 使用原文、译文交替页（默认左右对照）</label>
+      <label class="checkbox"><input id="sendTemperature" type="checkbox"/>向模型发送 temperature 参数（部分服务需要关闭）</label>
+      <p class="hint">个别段落翻译失败时保留原文，仍保存两份 PDF；附件标题、备注和 PDF 批注会提示未译内容。</p>
+    </fieldset>
+    <p class="hint">BabelDOC 在本机解析和排版；待翻译文本发送到上方模型接口。首次运行可能联网下载版面模型和字体。本机模型与所需资源齐备后可离线运行。</p>
+    <footer><span id="feedback" role="status"></span><button type="submit" class="primary">保存设置</button><button id="close" type="button">关闭</button></footer>
+  </form>
+</body>
+</html>
